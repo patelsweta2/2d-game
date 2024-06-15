@@ -27,6 +27,8 @@ body {
   width: 70px;
   height: 100px;
   background-image: url("./rat.png");
+  /* background-color: red; */
+
   background-size: cover;
   background-position: center;
 }
@@ -50,7 +52,22 @@ body {
   overflow: hidden;
 }
 
-.enemy {
+.overlay {
   position: absolute;
-  bottom: 0;
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay.play {
+  background-color: #30e129;
+}
+
+.overlay.lost {
+  background-color: #f95c4f;
 }

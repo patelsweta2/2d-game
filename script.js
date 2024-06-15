@@ -11,11 +11,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let ground = document.querySelector(".ground");
   let Box = document.querySelector(".game-box");
   let enemiesContainer = document.querySelector(".enemies");
+  let playOverlay = document.querySelector(".overlay.play");
+  let lostOverlay = document.querySelector(".overlay.lost");
 
   let player = {
     gravity: 1.2,
     speed: 0,
-    jumpStrength: 20,
+    jumpStrength: 23,
     maxJumps: 2,
     jumpCount: 0,
   };
@@ -68,7 +70,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     enemiesContainer.appendChild(newEnemy);
     enemies.push(newEnemy);
 
-    tempoInsere = 30 + Math.floor(21 * Math.random());
+    tempoInsere = 120 + Math.floor(41 * Math.random());
   }
 
   // Function to animate enemies
@@ -82,7 +84,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     for (let i = 0; i < enemies.length; i++) {
       let enemy = enemies[i];
       let enemyX = parseFloat(enemy.style.left);
-      enemy.style.left = `${enemyX - 5}px`;
+      enemy.style.left = `${enemyX - 2}px`;
 
       // Check collision with the user
       let userX = user.offsetLeft;
@@ -104,14 +106,34 @@ document.addEventListener("DOMContentLoaded", (event) => {
       // Remove enemies that are off-screen
       if (enemyX + enemyWidth <= 0) {
         enemies.splice(i, 1);
-        enemy.remove();
+        enemy.length--;
         i--;
       }
     }
   }
+  function clean() {
+    enemies = [];
+    while (enemiesContainer.firstChild) {
+      enemiesContainer.removeChild(enemiesContainer.firstChild);
+    }
+    player.speed = 0;
+    player.jumpCount = 0;
+  }
+
+  function click(e) {
+    if (statusCurrent === states.playing) {
+      jump();
+    } else if (statusCurrent === states.play) {
+      statusCurrent = states.playing;
+    } else if (statusCurrent === states.i_lost) {
+      statusCurrent = states.play;
+      user.style.top = "0px";
+      clean();
+    }
+  }
 
   function main() {
-    Box.addEventListener("click", jump);
+    Box.addEventListener("click", click);
     statusCurrent = states.play;
     gameLoop();
   }
@@ -119,13 +141,33 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function update() {
     frames++;
     userOnGround();
-    animateEnemies();
+    if (statusCurrent === states.playing) {
+      animateEnemies();
+    } else if (statusCurrent === states.i_lost) {
+      clean();
+    }
+  }
+
+  function draw() {
+    if (statusCurrent === states.play) {
+      playOverlay.style.display = "flex";
+      lostOverlay.style.display = "none";
+    } else if (statusCurrent === states.i_lost) {
+      playOverlay.style.display = "none";
+      lostOverlay.style.display = "flex";
+    } else if (statusCurrent === states.playing) {
+      playOverlay.style.display = "none";
+      lostOverlay.style.display = "none";
+      animateEnemies();
+    }
+    userOnGround();
   }
 
   function gameLoop() {
     update();
+    draw();
     window.requestAnimationFrame(gameLoop);
   }
 
-  //   main(); // Call main function to start the game
+  main(); // Call main function to start the game
 });
