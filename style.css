@@ -42,3 +42,15 @@ body {
   height: 55px;
   background-color: #020202;
 }
+
+.enemies {
+  position: absolute;
+  width: 100%;
+  height: 100%; /* Fill the game-box */
+  overflow: hidden;
+}
+
+.enemy {
+  position: absolute;
+  bottom: 0;
+}
