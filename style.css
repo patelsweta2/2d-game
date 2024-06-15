@@ -1,0 +1,44 @@
+body {
+  background-color: antiquewhite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.game-box {
+  position: relative;
+  height: 90vh;
+  width: 850px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: aqua;
+  border: 1px solid transparent;
+  overflow: hidden;
+}
+
+.user {
+  position: absolute;
+  bottom: 55px;
+  left: 50px;
+  z-index: 1;
+  width: 70px;
+  height: 100px;
+  background-image: url("./rat.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.hide {
+  display: block;
+}
+
+.ground {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 55px;
+  background-color: #020202;
+}
